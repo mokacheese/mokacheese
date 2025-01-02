@@ -18,6 +18,15 @@
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=mokacheese&cache_seconds=86400)](https://github.com/mokacheese/restaurant)
 
+![프로젝트 로그인 화면](https://github.com/mokacheese/restaurant/blob/master/%EB%A7%9B%EC%A7%911.png)
+![프로젝트 회원가입 화면](https://github.com/mokacheese/restaurant/blob/master/%EB%A7%9B%EC%A7%912.png)
+![프로젝트 대시보드 화면1](https://github.com/mokacheese/restaurant/blob/master/%EB%A7%9B%EC%A7%913.png)
+![프로젝트 대시보드 화면2](https://github.com/mokacheese/restaurant/blob/master/%EB%A7%9B%EC%A7%914.png)
+![프로젝트 게시글 작성 화면](https://github.com/mokacheese/restaurant/blob/master/%EB%A7%9B%EC%A7%915.png)
+![프로젝트 게시글 화면](https://github.com/mokacheese/restaurant/blob/master/%EB%A7%9B%EC%A7%916.png)
+![프로젝트 게시글목록 화면](https://github.com/mokacheese/restaurant/blob/master/%EB%A7%9B%EC%A7%917.png)
+![프로젝트 주변 맛집 화면](https://github.com/mokacheese/restaurant/blob/master/%EB%A7%9B%EC%A7%918.png)
+
 
 
 
