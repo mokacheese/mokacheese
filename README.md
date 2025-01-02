@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=데이터분석,마케팅&fontSize=95)
+![header](https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=데이터분석/마케팅&fontSize=95)
 
 [![*'s github stats](https://github-readme-stats.vercel.app/api?username=mokachees)](https://github.com/mokecheese)
 
