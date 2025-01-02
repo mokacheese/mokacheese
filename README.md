@@ -3,7 +3,7 @@
 [![*'s github stats](https://github-readme-stats.vercel.app/api?username=mokacheese)](https://github.com/mokecheese)
 
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=mokacheese)](https://github.com/mokacheese/github-readme-stats)
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=mokacheese)](https://github.com/mokacheese/restaurant)
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=mokacheese &layout=compact)](https://github.com/mokacheese/github-readme-stats)
 ![C](https://img.shields.io/badge/-C-123456?style=flat-square&logo=C&logoColor=black)
