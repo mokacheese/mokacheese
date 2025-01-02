@@ -1,6 +1,6 @@
-![header](https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=데이터분석/마케팅&fontSize=95)
+![header](https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=맛집추천웹페이지&fontSize=95)
 
-[![*'s github stats](https://github-readme-stats.vercel.app/api?username=mokachees)](https://github.com/mokecheese)
+[![*'s github stats](https://github-readme-stats.vercel.app/api?username=mokacheese)](https://github.com/mokecheese)
 
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=mokacheese)](https://github.com/mokacheese/github-readme-stats)
