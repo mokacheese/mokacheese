@@ -1,9 +1,9 @@
 ![header](https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=맛집추천웹페이지&fontSize=95)
 
-[![*'s github stats](https://github-readme-stats.vercel.app/api?username=mokacheese)](https://github.com/mokecheese)
+[![*'s github stats](https://github-readme-stats.vercel.app/api?username=mokacheese)](https://github.com/mokacheese)
 
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=mokacheese)](https://github.com/mokacheese/restaurant)
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=mokecheese)](https://github.com/mokacheese/restaurant)
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=mokacheese &layout=compact)](https://github.com/mokacheese/restaurant)
 ![C](https://img.shields.io/badge/-C-123456?style=flat-square&logo=C&logoColor=black)
