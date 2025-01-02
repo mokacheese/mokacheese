@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>전체 통계</title>
+    <style>
+        .content-container, .chart-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .content-box, .chart-box {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .content-box:last-child, .chart-box:last-child {
+            margin-right: 0;
+        }
+        .list-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .list-table th, .list-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        canvas {
+            width: 100%;
+            height: 400px;
+            max-width: 600px;
+        }
+        .brand-name {
+            text-align: center;
+            font-size: 50px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-top: 20px;
+        }
+        .menu-links {
+            text-align: right;
+            font-size: 15px;
+            color: #999;
+            margin: 10px 0;
+        }
+        .menu-links a {
+            margin-left: 15px;
+            text-decoration: none;
+            color: #999;
+        }
+        .dashboard-title {
+            text-align: left;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="brand-name">쩝쩝박사</div>
+    <div class="menu-links">
+        <a href="{% url 'board:info-list' %}">게시판1</a>
+        <a href="{% url 'board:info-list2' %}">게시판2</a>
+        <a href="{% url 'board:board3' %}">게시판3</a>
+        <form method="post" action="{% url 'users:logout' %}">
+            {% csrf_token %}
+            <button type="submit">로그아웃</button>
+
+            <a href="{% url 'dashboard:dashboard' %}" style="color:black; padding:5px 10px; border-radius:5px; text-decoration:none;">[개인]</a>
+        </form>
+    </div>
+
+    <h1 class="dashboard-title">전체 통계</h1>
+
+    <div class="chart-container">
+        <div class="chart-box">
+            <canvas id="recommendCommentChart"></canvas>
+        </div>
+        <div class="chart-box">
+            <canvas id="restaurantCommentChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dates = JSON.parse('{{ dates|safe }}');
+            const recommendCommentCounts = JSON.parse('{{ recommend_comment_counts|safe }}');
+            const restaurantCommentCounts = JSON.parse('{{ restaurant_comment_counts|safe }}');
+
+            // Chart for Recommend Comments (게시판1 댓글 수)
+            const recommendCommentChartCtx = document.getElementById('recommendCommentChart').getContext('2d');
+            new Chart(recommendCommentChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: '게시판1 댓글수',
+                        data: recommendCommentCounts,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            suggestedMax: Math.max(...recommendCommentCounts) + 1
+                        }
+                    },
+                    plugins: {
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            formatter: Math.round,
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+
+            // Chart for Restaurant Comments (게시판2 댓글 수)
+            const restaurantCommentChartCtx = document.getElementById('restaurantCommentChart').getContext('2d');
+            new Chart(restaurantCommentChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: '게시판2 댓글수',
+                        data: restaurantCommentCounts,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            suggestedMax: Math.max(...restaurantCommentCounts) + 1
+                        }
+                    },
+                    plugins: {
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            formatter: Math.round,
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        });
+    </script>
+
+
+    <!-- 구별 데이터 원 그래프 -->
+    <br>
+    <div>
+        <h3>게시판2 구 통계</h3>
+        <canvas id="guPieChart"></canvas>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const guLabels = JSON.parse('{{ gu_labels|safe }}');
+    const guData = JSON.parse('{{ gu_data|safe }}');
+
+    const ctx = document.getElementById('guPieChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: guLabels,
+            datasets: [{
+                label: '구별 데이터 분포',
+                data: guData,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            aspectRatio: 1.5,
+            plugins: {
+                legend: {
+                    position: 'top',  // 범례를 위에 배치
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            let total = tooltipItem.dataset.data.reduce((a, b) => a + b, 0);
+                            let value = tooltipItem.raw;
+                            let percentage = ((value / total) * 100).toFixed(2);
+                            return `${tooltipItem.label}: ${percentage}% `;
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+
+
+
+</body>
+</html>

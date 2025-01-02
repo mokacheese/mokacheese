@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>댓글 수정</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #DB8628;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .star-rating {
+            direction: rtl;
+            display: inline-flex;
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            color: gray;
+            cursor: pointer;
+        }
+
+        .star-rating input:checked ~ label {
+            color: gold;
+        }
+
+        button {
+            background-color: #DB8628;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 20px auto 0;
+        }
+
+        button:hover {
+            background-color: #C77520;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            color: #999;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+
+        a:hover {
+            color: #DB8628;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>댓글 수정</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div>
+                <label for="id_content">내용:</label>
+                {{ form.content }}
+            </div>
+            {{ form.comment_rating.label_tag }}
+            <div class="star-rating">
+                <input type="radio" id="star5" name="comment_rating" value="5" />
+                <label for="star5" title="5 stars">&#9733;</label>
+                <input type="radio" id="star4" name="comment_rating" value="4" />
+                <label for="star4" title="4 stars">&#9733;</label>
+                <input type="radio" id="star3" name="comment_rating" value="3" />
+                <label for="star3" title="3 stars">&#9733;</label>
+                <input type="radio" id="star2" name="comment_rating" value="2" />
+                <label for="star2" title="2 stars">&#9733;</label>
+                <input type="radio" id="star1" name="comment_rating" value="1" />
+                <label for="star1" title="1 star">&#9733;</label>
+            </div>
+            <button type="submit">수정하기</button>
+        </form>
+        <a href="{% url 'board:info_detail' form.instance.info.id %}">취소</a>
+    </div>
+</body>
+</html>

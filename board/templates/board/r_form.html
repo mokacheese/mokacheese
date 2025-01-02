@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #DB8628;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        form p {
+            margin-bottom: 15px;
+        }
+
+        form input[type="text"], form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #DB8628;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 20px auto 0;
+        }
+
+        button:hover {
+            background-color: #C77520;
+        }
+
+        .menu-links {
+            text-align: center;
+            font-size: 15px;
+            margin-top: 20px;
+        }
+
+        .menu-links a {
+            text-decoration: none;
+            color: #999;
+        }
+
+        .menu-links a:hover {
+            color: #DB8628;
+            text-decoration: underline;
+        }
+    </style>
+    <title>{% if object %} 게시글 수정 {% else %} 게시글 작성 {% endif %}</title>
+</head>
+<body>
+    <div class="container">
+        <h1>{% if object %} 게시글 수정 {% else %} 게시글 작성 {% endif %}</h1>
+        <form method='post' enctype="multipart/form-data" onsubmit="return validateForm()">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="hidden" id="my_latitude" name="my_latitude">
+            <input type="hidden" id="my_longitude" name="my_longitude">
+            <button type='submit' onclick='getLocation()'>{% if object %}수정{% else %}작성{% endif %}</button>
+        </form>
+        <div class="menu-links">
+            <a href="{% url 'board:info-list' %}">취소</a>
+        </div>
+    </div>
+    <script src="{% static 'js/my_location.js' %}"></script>
+</body>
+</html>

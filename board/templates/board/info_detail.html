@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ information.title }}의 상세 정보</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sm7wrq4eov"></script>
+    <script src="{% static 'js/restaurant_detail_map.js' %}"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #DB8628;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        #map {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .action-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-right: 10px;
+            text-decoration: none;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .edit-button {
+            background-color: #DB8628;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+        }
+
+        .action-button:hover {
+            opacity: 0.8;
+        }
+
+        .comment-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .comment-list li {
+            background: #fff;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .star-rating {
+            direction: rtl;
+            display: inline-flex;
+            font-size: 20px;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            color: gray;
+            cursor: pointer;
+        }
+
+        .star-rating input:checked ~ label {
+            color: gold;
+        }
+
+        form input[type="text"], form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #DB8628;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #C77520;
+        }
+
+        a {
+            color: #DB8628;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ information.title }}</h1>
+        <p><strong>주소:</strong> {{ information.r_address }}</p>
+        <p><strong>추천 내용:</strong> {{ information.description }}</p>
+        {% if information.file %}
+            <img src="{{ information.file.url }}" alt="게시글 이미지">
+        {% endif %}
+        <div id="map"></div>
+        <div class="action-buttons">
+            <a href="{% url 'board:info-update' information.id %}" class="action-button edit-button">수정</a>
+            <form id="deleteForm" action="{% url 'board:info-delete' information.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="button" onclick="confirmDelete()" class="action-button delete-button">삭제</button>
+            </form>
+        </div>
+
+        <h2>댓글</h2>
+        <ul class="comment-list">
+        {% for comment in comments %}
+            <li>
+                {{ comment.user.email}}
+                <div class="star-rating">
+                {% for star in star_range %}
+                    <input type="radio" id="star{{ star }}-{{ comment.id }}" name="rating-{{ comment.id }}" value="{{ star }}"
+                        {% if comment.comment_rating == star %}checked{% endif %} disabled />
+                    <label for="star{{ star }}-{{ comment.id }}" title="{{ star }} stars">&#9733;</label>
+                {% endfor %}
+                </div><br>
+                <span>({{ comment.create_at|date:"Y-m-d H:i" }})</span><br>
+                {{ comment.content }} -
+                {% if user == comment.user %}
+                    <a href="{% url 'board:edit_comment' comment.id %}">수정</a>
+                    <a href="{% url 'board:delete_comment' comment.id %}">삭제</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+
+        <h3>댓글 남기기</h3>
+        <form method="post" action="{% url 'board:info_detail' information.id %}">
+            {% csrf_token %}
+            <div>
+                <label for="id_content">내용:</label>
+                {{ comment_form.content }}
+            </div>
+            {{ form.comment_rating.label_tag }}
+            <div class="star-rating">
+                <input type="radio" id="star5" name="comment_rating" value="5" />
+                <label for="star5" title="5 stars">&#9733;</label>
+                <input type="radio" id="star4" name="comment_rating" value="4" />
+                <label for="star4" title="4 stars">&#9733;</label>
+                <input type="radio" id="star3" name="comment_rating" value="3" />
+                <label for="star3" title="3 stars">&#9733;</label>
+                <input type="radio" id="star2" name="comment_rating" value="2" />
+                <label for="star2" title="2 stars">&#9733;</label>
+                <input type="radio" id="star1" name="comment_rating" value="1" />
+                <label for="star1" title="1 star">&#9733;</label>
+            </div>
+            <button type="submit">댓글 남기기</button>
+        </form>
+
+        <a href="{% url 'board:info-list' %}">목록으로 돌아가기</a>
+    </div>
+
+    <script>
+        function confirmDelete() {
+            if (confirm("정말로 삭제하시겠습니까?")) {
+                document.getElementById("deleteForm").submit();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if information.r_latitude and information.r_longitude %}
+                restaurantMap("{{ information.restaurant_name }}", {{ information.r_latitude }}, {{ information.r_longitude }});
+            {% else %}
+                console.log("위치 정보가 없습니다.");
+                document.getElementById('map').innerHTML = "<p>위치 정보가 없습니다.</p>";
+            {% endif %}
+        });
+    </script>
+</body>
+</html>

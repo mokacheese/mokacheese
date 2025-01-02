@@ -1,0 +1,343 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> 쩝쩝박사 사용자추천 </title>
+<!--    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">-->
+    <style>
+/* 헤더 네브바 부분!!!!!!!!!!!!!!!!!!!!!!!! */
+.header {
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; /* 전체 너비 사용 */
+    max-width: 1400px; /* 최대 너비 설정 (필요에 따라 조정) */
+}
+.logo {
+    display: flex;
+    align-items: center;
+}
+.logo img {
+    width: 50px;
+    margin-right: 10px;
+}
+.logo h1 {
+    color: #333;
+    margin: 0;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+}
+.nav-item {
+    margin-right: 20px;
+    text-decoration: none;
+    color: #333;
+}
+
+.nav p {
+margin-right:30px;             /* 원하는 마진 크기로 조절 가능 */
+}
+
+.logout-form {
+    margin: 0;
+    padding: 0;
+}
+.logout-button {
+    background: none;
+    border: none;
+    color: #333;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+}
+
+
+
+
+
+
+
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('{% static "배경.jpg" %}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    z-index: -1;
+}
+h2 {
+    color: #333;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    margin: 80px;
+    font-size: 30px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* 검색폼,정렬!!!!!!!!!!!! */
+#searchForm {
+margin-bottom: 50px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+#searchForm input[type="text"] {
+padding: 8px;
+border: 1px solid #ddd;
+border-radius: 4px;
+flex-grow: 1;
+}
+
+#sortSelect {
+padding: 8px;
+border: 1px solid #ddd;
+border-radius: 4px;
+}
+
+#searchForm button {
+padding: 8px 15px;
+background-color: #DB8628;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+#searchForm button:hover {
+background-color: #77A832;
+transition: background-color 1s ease;
+}
+
+.btn-link {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #DB8628;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    background-color: #77A832;
+    text-decoration: none;
+    color: white;
+    transition: background-color 1s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+th {
+    background-color: rgba(255, 255, 255, 0.9);
+    font-weight: bold;
+    color: #333;
+}
+
+tr {
+    background-color: rgba(255, 255, 255, 0.6);
+    transition: background-color 0.3s ease;
+}
+
+tr:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+td:first-child {
+    font-weight: bold;
+    color: #444;
+}
+
+td:nth-child(2) {
+    color: #007bff;
+}
+
+.star-rating {
+    color: #FFD700;
+    font-size: 18px;
+}
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        list-style-type: none;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    li {
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 10px;
+        padding: 20px;
+        text-align: left;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+    }
+
+    li h2 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 1.2em;
+    }
+
+    li h2 a {
+        color: #333;
+        text-decoration: none;
+    }
+
+    li .star-rating {
+        margin-bottom: 10px;
+    }
+
+    li img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+
+    /* 반응형 디자인을 위한 미디어 쿼리 */
+    @media (max-width: 768px) {
+        ul {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+    }
+
+
+
+
+    </style>
+</head>
+    <header class="header">
+        <div class="logo">
+        <img src="/static/z.png" alt="Green Fair Logo">
+        <h1>쩝쩝박사</h1>
+        </div>
+    <nav class="nav">
+        <p>환영합니다 {{ user.username }}님!              </p>
+
+        <a href="{% url 'board:info-list' %}" class="nav-item">사용자 추천</a>
+        <a href="{% url 'board:info-list2' %}" class="nav-item">내주변 맛집</a>
+        <a href="{% url 'board:board3' %}" class="nav-item">지도로 보기</a>
+        <a href="{% url 'dashboard:dashboard' %}" class="nav-item">대시보드</a>
+        <form method="post" action="{% url 'users:logout' %}" class="nav-item logout-form">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">로그아웃</button>
+        </form>
+    </nav>
+    </header>
+
+    <div class="overlay"></div>
+
+    <h2> 사용자들이 추천한 맛집리스트 </h2>
+
+        <!--  검색, 정렬   -->
+<form method="get" id="searchForm">
+    <input type="text" name="q" value="{{ request.GET.q }}" placeholder="검색어를 입력하세요">
+    <select name="sort" id="sortSelect">
+        <option value="title" {% if sort_option == 'title' %}selected{% endif %}>기본 정렬</option>
+        <option value="name" {% if sort_option == 'name' %}selected{% endif %}>이름순</option>
+        <option value="address" {% if sort_option == 'address' %}selected{% endif %}>주소순</option>
+        <option value="avg_rating" {% if sort_option == 'avg_rating' %}selected{% endif %}>평점순</option>
+    </select>
+    <button type="submit">검색</button>
+    <a href="{% url 'board:r-create' %}" class="btn-link">목록 추가하기</a>
+</form>
+
+
+
+
+
+
+        <ul>
+        {% for contact in contacts %}
+                <li>
+                    <h2><a href="{% url 'board:info_detail' contact.id %}">{{ contact.title }}</a></h2>
+                    <div class="star-rating">
+                        평균 별점: {{ contact.avg_rating|default:"0" }}
+                    </div><br>
+                        {{contact.r_address}}<br>
+                        {% if contact.file %}
+                            <img src="{{ contact.file.url }}" alt="이미지" style="width: 300px; height: auto;">
+                        {% endif %}
+                </li>
+        {% endfor %}
+        </ul>
+</body>
+</html>
+
+<script>
+    document.getElementById('sortSelect').addEventListener('change', function() {
+        document.getElementById('searchForm').submit();
+    });
+</script>

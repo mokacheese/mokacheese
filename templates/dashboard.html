@@ -1,0 +1,645 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId={{ naver_client_id }}"></script>
+    <title> 쩝쩝박사 대시보드 </title>
+    <style>
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 100px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            width: 50px;
+            margin-right: 10px;
+        }
+        .logo h1 {
+            color: #333;
+            margin: 0;
+        }
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+        .nav-item {
+            margin-right: 20px;
+            text-decoration: none;
+            color: #333;
+        }
+        .logout-form {
+            margin: 0;
+            padding: 0;
+        }
+        .logout-button {
+            background: none;
+            border: none;
+            color: #333;
+            font: inherit;
+            cursor: pointer;
+            padding: 0;
+        }
+
+
+
+
+
+
+
+        body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('{% static "배경.jpg" %}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    z-index: -1;
+}
+
+
+
+
+
+
+/* .video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    opacity: 0.5
+}
+
+.video-background video {
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+.content-overlay {
+    position: relative;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.2);
+    min-height: 100vh;
+    padding: 20px;
+}
+.container {
+    max-width: 1800px;
+    width: 95%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.content-box {
+    background: rgba(255, 255, 255, 0.9);                             /* 테이블배경 불투명도조절!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow-x: auto;
+}
+
+
+.section-title {
+    color: #DB8628;                                    /* 헥사코드!!!!!!!!!!!!! */
+    border-bottom: 2px solid #DB8628;              /* 헥사코드!!!!!!!!!!!!! */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.list-table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+}
+
+.list-table th, .list-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.list-table td:nth-child(2) {
+    max-width: 150px;
+}
+
+.list-table td:nth-child(3) {
+    max-width: 180px;
+}
+
+.list-table th {
+    background-color: #DB8628;              /* 헥사코드!!!!!!!!!!!!! */
+    color: white;                               /* 각 테이블 별 글씨색깔!!!!!!!!!!!!!!!*/
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.list-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.list-table tr:hover {
+    background-color: rgba(255, 228, 181, 1);
+}
+
+.list-table a {
+    color: #FF8C00;
+    text-decoration: none;
+    font-weight: bold;
+
+}
+
+.list-table a:hover {
+    text-decoration: underline;
+}
+
+.chart-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.chart-box {
+    flex: 1;
+    min-width: 0;
+}
+
+canvas {
+    width: 100% !important;
+    height: 300px !important;
+}
+
+@media (max-width: 768px) {
+    .content-container, .chart-container {
+        flex-direction: column;
+    }
+
+    .chart-box {
+        width: 100%;
+    }
+
+    .list-table {
+        font-size: 14px;
+
+    }
+
+    .list-table th, .list-table td {
+        padding: 10px;
+    }
+}
+#map {
+    width: 100%;
+    height: 500px;
+}
+
+.content-row {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: nowrap;
+}
+
+.content-column {
+    flex: 1;
+    min-width: 0;
+}
+
+.full-width {
+    width: 100%;
+}
+
+@media (max-width: 1200px) {
+    .content-row {
+        flex-direction: column;
+    }
+
+    .content-column {
+        width: 100%;
+    }
+
+    .list-table th, .list-table td {
+        white-space: normal;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <!-- <div class="video-background">
+        <video autoplay loop muted>
+            <source src="/static/불쇼.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="content-overlay">
+        <div class="container"> -->
+<body>
+
+
+
+<div class="container">
+    <header class="header">
+        <div class="logo">
+        <img src="/static/z.png" alt="Green Fair Logo">
+        <h1>쩝쩝박사</h1>
+        </div>
+    <nav class="nav">
+        <a href="{% url 'board:info-list' %}" class="nav-item">사용자 추천</a>
+        <a href="{% url 'board:info-list2' %}" class="nav-item">내주변 맛집</a>
+        <a href="{% url 'board:board3' %}" class="nav-item">지도로 보기</a>
+        <form method="post" action="{% url 'users:logout' %}" class="nav-item logout-form">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">로그아웃</button>
+        </form>
+    </nav>
+    </header>
+
+    <div class="overlay"></div>
+
+
+    <div class="container">
+        <div class="content-container">
+            <div class="content-row">
+                <div class="content-column">
+                    <div class="content-box">
+                        <h2 class="section-title">내가 쓴 게시글</h2>
+                        <table class="list-table">
+                            <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>제목</th>
+                                    <th>등록일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for info in user_infos %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td title="{{ info.title }}"><a href="{% url 'board:info_detail' info.id %}">{{ info.title }}</a></td>
+                                        <td>{{ info.create_at }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <p>총 게시글 수: {{ post_count }}</p>
+                    </div>
+                </div>
+                <div class="content-column">
+                    <div class="content-box">
+                        <h2 class="section-title">내가 쓴 댓글</h2>
+                        <table class="list-table">
+                            <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>게시글</th>
+                                    <th>내용</th>
+                                    <th>평점</th>
+                                    <th>작성일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for comment in user_comments %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td title="{{ comment.info.title }}"><a href="{% url 'board:info_detail' comment.info.id %}">{{ comment.info.title }}</a></td>
+                                        <td title="{{ comment.content }}">{{ comment.content }}</td>
+                                        <td>{{ comment.comment_rating }}</td>
+                                        <td>{{ comment.create_at }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <p>총 댓글 수: {{ comment_count }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-row">
+                <div class="content-column">
+                    <div class="content-box">
+                        <h2 class="section-title">게시글 작성 위치</h2>
+                        <div class="map-container">
+                            <div class="map-box">
+                                <div id="map"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-column">
+                    <div class="content-box">
+                        <h2 class="section-title">내가 쓴 맛집 댓글</h2>
+                        <table class="list-table">
+                            <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>맛집</th>
+                                    <th>내용</th>
+                                    <th>평점</th>
+                                    <th>작성일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for comment in user_restaurant_comments %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td title="{{ comment.info.r_name }}"><a href="{% url 'board:info_detail2' comment.info.id %}">{{ comment.info.r_name }}</a></td>
+                                        <td title="{{ comment.content }}">{{ comment.content }}</td>
+                                        <td>{{ comment.comment_rating }}</td>
+                                        <td>{{ comment.create_at }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <p>총 맛집 댓글 수: {{ restaurant_comment_count }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-row">
+                <div class="content-column full-width">
+                    <div class="content-box">
+                        <h2 class="section-title">게시글/리뷰 통계</h2>
+                        <div class="chart-container">
+                            <div class="chart-box">
+                                <canvas id="postChart"></canvas>
+                            </div>
+                            <div class="chart-box">
+                                <canvas id="commentChart"></canvas>
+                            </div>
+                            <div class="chart-box">
+                                <canvas id="restaurantCommentChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-row">
+                <div class="content-column full-width">
+                    <div class="content-box">
+                        <h2 class="section-title">지역별 맛집 통계</h2>
+                        <div class="chart-container">
+                            <div class="chart-box">
+                                <canvas id="guChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dates = JSON.parse('{{ dates|safe }}');
+            const postCounts = JSON.parse('{{ post_counts|safe }}');
+            const commentCounts = JSON.parse('{{ comment_counts|safe }}');
+            const restaurantCommentCounts = JSON.parse('{{ restaurant_comment_counts|safe }}');
+
+            console.log('Dates:', dates);
+            console.log('Post Counts:', postCounts);
+            console.log('Comment Counts:', commentCounts);
+            console.log('Restaurant Comment Counts:', restaurantCommentCounts);
+
+            const maxPostCount = Math.max(...postCounts, 1);
+            const maxCommentCount = Math.max(...commentCounts, ...restaurantCommentCounts, 1);
+
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        reverse: false
+                    },
+                    y: {
+                        beginAtZero: true,
+                        suggestedMax: 5
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        formatter: Math.round,
+                        font: {
+                            weight: 'bold'
+                        }
+                    }
+                }
+            };
+
+            const postChartCtx = document.getElementById('postChart').getContext('2d');
+            new Chart(postChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: '게시글 수',
+                        data: postCounts,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: chartOptions,
+                plugins: [ChartDataLabels]
+            });
+
+            const commentChartCtx = document.getElementById('commentChart').getContext('2d');
+            new Chart(commentChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: '댓글 수',
+                        data: commentCounts,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: chartOptions,
+                plugins: [ChartDataLabels]
+            });
+
+            const restaurantCommentChartCtx = document.getElementById('restaurantCommentChart').getContext('2d');
+            new Chart(restaurantCommentChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: '맛집 댓글 수',
+                        data: restaurantCommentCounts,
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: chartOptions,
+                plugins: [ChartDataLabels]
+            });
+            const userLocations = JSON.parse('{{ user_locations|safe }}');
+            initMap(userLocations);
+
+            const guLabels = JSON.parse('{{ gu_labels|safe }}');
+            const guData = JSON.parse('{{ gu_data|safe }}');
+
+            const guChartCtx = document.getElementById('guChart').getContext('2d');
+            new Chart(guChartCtx, {
+                type: 'pie',
+                data: {
+                    labels: guLabels,
+                    datasets: [{
+                        data: guData,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 206, 86, 0.8)',
+                            'rgba(75, 192, 192, 0.8)',
+                            'rgba(153, 102, 255, 0.8)',
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: '지역별 맛집 통계'
+                        },
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = 0;
+                                let dataArr = ctx.chart.data.datasets[0].data;
+                                dataArr.map(data => {
+                                    sum += data;
+                                });
+                                let percentage = (value * 100 / sum).toFixed(2) + "%";
+                                return percentage;
+                            },
+                            color: '#fff',
+                            font: {
+                                weight: 'bold',
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        });
+
+    function initMap(locations) {
+        if (locations.length === 0) {
+            document.getElementById('map').innerHTML = '<p>위치 정보가 없습니다.</p>';
+            return;
+        }
+
+        const mapOptions = {
+            center: new naver.maps.LatLng(locations[0].my_latitude, locations[0].my_longitude),
+            zoom: 15
+        };
+        const map = new naver.maps.Map('map', mapOptions);
+
+        const locationGroups = {};
+        locations.forEach(location => {
+            const key = `${location.my_latitude},${location.my_longitude}`;
+            if (!locationGroups[key]) {
+                locationGroups[key] = [];
+            }
+            locationGroups[key].push(location);
+        });
+
+        Object.entries(locationGroups).forEach(([key, group]) => {
+            const [lat, lng] = key.split(',');
+            const marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(lat, lng),
+                map: map,
+                title: `${group.length}개의 게시글`
+            });
+
+            const infowindow = new naver.maps.InfoWindow({
+                content: `
+                    <div style="padding:10px;min-width:200px;">
+                        <h3>${group.length}개의 게시글</h3>
+                        ${group.map(location => `
+                            <p><a href="/board/info/${location.id}/">${location.title}</a></p>
+                        `).join('')}
+                    </div>
+                `
+            });
+
+            naver.maps.Event.addListener(marker, 'click', function() {
+                if (infowindow.getMap()) {
+                    infowindow.close();
+                } else {
+                    infowindow.open(map, marker);
+                }
+            });
+        });
+    }
+    </script>
+</body>
+</html>

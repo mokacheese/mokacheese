@@ -1,0 +1,96 @@
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px; /* 최대 너비 설정 */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+
+h1, h2 {
+    color: #DB8628;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    background-color: #DB8628; /* 포인트 색상 변경 */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #C77520;
+}
+
+a {
+    text-decoration: none;
+    color: #DB8628;
+    margin-right: 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+.star-rating {
+                direction: rtl;
+                display: inline-flex;
+                font-size: 30px;
+            }
+
+.star-rating input {
+                display: none;
+            }
+
+.star-rating label {
+                color: gray;
+                cursor: pointer;
+            }
+
+.star-rating input:checked ~ label {
+                color: gold;
+            }
+
+.star-rating li {
+    background: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+/* 메뉴 링크 스타일 */
+.menu-links {
+    text-align: right;
+    font-size: 15px;
+    color: #999;
+    margin: 10px 0;
+}
+.menu-links a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #999;
+}
